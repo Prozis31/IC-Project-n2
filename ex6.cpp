@@ -40,12 +40,6 @@ void sort_map(map<int, int> &m)
         v.push_back(i);
     }
     sort(v.begin(), v.end(), cmp);
-    /* map<int, int> new_map;
-    for (auto &i : v)
-    {
-        new_map.emplace(i.first, i.second);
-    }
-    return new_map; */
 }
 
 _Float32 vector_mean(vector<int> x)
@@ -276,42 +270,6 @@ void decode_image(vector<string> filenames)
     waitKey(0);
 }
 
-/* int get_m(map<int, int> &x, int size)
-{
-    sort_map(x);
-    vector<int> m_values;
-    int max = 1000;
-    for (auto elem : x)
-    {
-        float n = elem.first;
-        float n_count = elem.second;
-        if (n_count == 0)
-            continue;
-        float prob = n_count / size;
-        long min = LONG_MAX;
-        long min_index = LONG_MAX;
-        for (int i = 0; i < max; i++)
-        {
-            float alpha = (float)i / (float)max;
-            float res = pow(alpha, n) * (1.0 - alpha);
-            // cout << "*** = " << abs(res - prob) << endl;
-            if (abs(res - prob) < min)
-            {
-                min = abs(res - prob);
-                min_index = i;
-                if (abs(res - prob) == 0)
-                    break;
-            }
-        }
-        cout << "min_index = " << min_index << endl;
-        m_values.push_back(min_index);
-    }
-    float alpha_mean = floor(vector_mean(m_values)) / max;
-    int m = ceil(-1 / log2(alpha_mean));
-    return m;
-} */
-
-// g++ ex1.cpp -std=c++11 `pkg-config --cflags --libs opencv`
 int main(int argc, char **argv)
 {
     if (argc != 3)
@@ -330,9 +288,6 @@ int main(int argc, char **argv)
         exit(1);
     }
     cvtColor(rgb, yuv, COLOR_BGR2YUV_I420);
-    // imshow("yuv", yuv);
-    //  cout << rgb.cols << "x" << rgb.rows << endl;
-    //  cout << yuv.cols << "x" << yuv.rows << endl;
 
     vector<int> Y, U, V;
     map<int, int> count_char;

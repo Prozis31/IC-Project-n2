@@ -105,11 +105,7 @@ int main(int argc, char *argv[])
         }
     }
     pred_arrayChannel0 = predictor(arr_size, samplesChannel0);
-    /* double *ptr = &pred_arrayChannel0[0];
-    for(int i = 0; i<arr_size;i++){
-        cout<< *ptr <<endl;
-        ptr++;
-    } */
+
     resiChannel0 = residual(arr_size, samplesChannel0, arr_size, pred_arrayChannel0);
     resiQuantChannel0 = quantitization(arr_size, resiChannel0);
     for (int i = 0; i < arr_size; i++)
@@ -124,12 +120,6 @@ int main(int argc, char *argv[])
         encIntCh0.push_back(b);
     }
 
-    /* for(auto x: encIntCh0){
-        cout<<x<<endl;
-    }
-    for(auto x: encDecCh0){
-        cout<<x<<endl;
-    }   */
     vector<int> decIntCh0;
     vector<int> decDecCh0;
     Golomb gIntCh0(128, "gInt.bits");
@@ -139,11 +129,6 @@ int main(int argc, char *argv[])
     auto t2 = high_resolution_clock::now();
     auto ms_int = duration_cast<milliseconds>(t2 - t1);
 
-    /* for (auto i = encIntCh0.cbegin(); i != encIntCh0.cend(); i++)
-    {
-        cout << *i << " ";
-    }
-    cout << endl; */
     cout << ms_int.count() << "ms to encode" << endl;
 
     Golomb gDecCh0(4096, "gDec.bits");
@@ -152,23 +137,13 @@ int main(int argc, char *argv[])
     gDecCh0.encode(encDecCh0);
     t2 = high_resolution_clock::now();
     ms_int = duration_cast<milliseconds>(t2 - t1);
-    /*  for (auto i = encDecCh0.cbegin(); i != encDecCh0.cend(); i++)
-     {
-         cout << *i << " ";
-     }
-     cout << endl; */
+
     cout << ms_int.count() << "ms to encode" << endl;
     t1 = high_resolution_clock::now();
     decIntCh0 = gIntCh0.decode();
     t2 = high_resolution_clock::now();
     ms_int = duration_cast<milliseconds>(t2 - t1);
-    /* cout << "Decoded the values: ";
-    for (auto i = dec.cbegin(); i != dec.cend(); i++)
-    {
-        decIntCh0.push_back(*i);
-    }
-    cout << endl;
-    dec.erase(dec.cbegin(), dec.cend()); */
+
     cout << "Encoded file used " << gIntCh0.get_filename_num_chars() * 8 << " bits and took " << ms_int.count() << "ms to decode" << endl;
 
     gIntCh0.delete_bin_file();
@@ -177,13 +152,7 @@ int main(int argc, char *argv[])
     decDecCh0 = gDecCh0.decode();
     t2 = high_resolution_clock::now();
     ms_int = duration_cast<milliseconds>(t2 - t1);
-    /*cout << "Decoded the values: ";
-     for (auto i = dec.cbegin(); i != dec.cend(); i++)
-    {
-        cout << *i << " ";
-    }
-    cout << endl;
-    dec.erase(dec.cbegin(), dec.cend());*/
+
     cout << "Encoded file used " << gDecCh0.get_filename_num_chars() * 8 << " bits and took " << ms_int.count() << "ms to decode" << endl;
     gDecCh0.delete_bin_file();
     int count = 0;
@@ -207,10 +176,6 @@ int main(int argc, char *argv[])
         // audioOut.samples[0][count] = samplefinal;
     }
 
-    /* for(auto i = decDecCh0.cbegin(); i!= decDecCh0.end();i++){
-        cout<< *i << endl;
-    }  */
-
     if (num_channels == 2)
     {
         vector<int> decIntCh1;
@@ -231,25 +196,12 @@ int main(int argc, char *argv[])
             encDecCh1.push_back(a * pow(10, size));
         }
 
-        /* for(auto x: encIntCh1){
-            cout<<x<<endl;
-        } */
-        /* for(auto x: encDecCh1){
-            cout<<x<<endl;
-        }  */
-
         Golomb gIntCh1(128, "gInt.bits");
         cout << "Channel1" << endl;
         auto t1 = high_resolution_clock::now();
         gIntCh1.encode(encIntCh1);
         auto t2 = high_resolution_clock::now();
         auto ms_int = duration_cast<milliseconds>(t2 - t1);
-
-        /* for (auto i = encIntCh1.cbegin(); i != encIntCh1.cend(); i++)
-        {
-            cout << *i << " ";
-        }
-        cout << endl; */
 
         cout << ms_int.count() << "ms to encode" << endl;
 
@@ -259,22 +211,14 @@ int main(int argc, char *argv[])
         gDecCh1.encode(encDecCh1);
         t2 = high_resolution_clock::now();
         ms_int = duration_cast<milliseconds>(t2 - t1);
-        /*  for (auto i = encDecCh1.cbegin(); i != encDecCh1.cend(); i++)
-         {
-             cout << *i << " ";
-         }
-         cout << endl; */
+
         cout << ms_int.count() << "ms to encode" << endl;
         t1 = high_resolution_clock::now();
         decIntCh1 = gIntCh1.decode();
         t2 = high_resolution_clock::now();
         ms_int = duration_cast<milliseconds>(t2 - t1);
         cout << "Decoded the values: ";
-        /* for (auto i = dec.cbegin(); i != dec.cend(); i++)
-        {
-            cout << *i << " ";
-        }
-        cout << endl; */
+
         cout << "Encoded file used " << gIntCh1.get_filename_num_chars() * 8 << " bits and took " << ms_int.count() << "ms to decode" << endl;
 
         gIntCh1.delete_bin_file();
@@ -284,11 +228,7 @@ int main(int argc, char *argv[])
         t2 = high_resolution_clock::now();
         ms_int = duration_cast<milliseconds>(t2 - t1);
         cout << "Decoded the values: ";
-        /* for (auto i = dec.cbegin(); i != dec.cend(); i++)
-        {
-            cout << *i << " ";
-        }
-        cout << endl; */
+
         cout << "Encoded file used " << gDecCh1.get_filename_num_chars() * 8 << " bits and took " << ms_int.count() << "ms to decode" << endl;
         gDecCh1.delete_bin_file();
         int count = 0;
